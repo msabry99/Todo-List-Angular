@@ -1,0 +1,70 @@
+<div class="d-flex align-items-start justify-content-center hv-100 py-4 mx-auto w-100 mx-w-800 mb-3">
+  <img src="../assets/logo.png" class="logo-image" alt="Logo" loading="lazy" />
+</div>
+
+<div class="container">
+  <form #taskForm="ngForm" (ngSubmit)="onAddTask(taskForm)">
+    <div class="p-3 mb-5 input-task-card rounded shadow-card mx-auto w-100 mx-w-800">
+      <label for="task" class="form-label d-flex align-items-start gap-2 fw-semibold fs-2 mb-3 lh-1">
+        <i class="ph ph-list-plus fs-1 icon-boxed"></i>
+        <div class="fs-1">Task to Complete</div>
+      </label>
+      <div class="d-flex flex-wrap flex-md-nowrap justify-content-center gap-2">
+        <input type="text" class="todo-input form-control input-focus fs-5 py-3" id="task"
+          placeholder="Enter a New Task..." ngModel name="newTask" required #mainInput>
+        <button type="submit"
+          class="btn btn-purple d-flex align-items-center justify-content-center w-100 w-md-auto gap-2 mn-w-150 fw-semibold py-3 fs-5"
+          [disabled]="taskForm.invalid">
+          <i class="ph ph-plus-circle fs-4"></i>
+          Add a Task
+        </button>
+      </div>
+    </div>
+  </form>
+  <ul class="todo-list list-unstyled d-flex flex-column gap-3 p-0 m-0 w-100 mx-w-800 mx-auto pb-3">
+    <li class="d-flex align-items-center justify-content-between flex-wrap gap-2 text-white">
+      <div class="d-flex align-items-center gap-2" *ngIf="taskList.length">
+        <i class="ph ph-list-numbers fs-1 icon-boxed"></i>
+        <div class="d-flex align-items-center gap-1 fs-4">Tasks Count :
+          <span class="d-inline-flex fs-2 fw-bold">
+            {{ taskList.length }}
+          </span>
+        </div>
+      </div>
+      <div class="d-flex align-items-center gap-2" *ngIf="completedTaskCount">
+        <i class="ph-bold ph-list-checks fs-1 icon-boxed"></i>
+        <div class="d-flex align-items-center gap-1 fs-4">Completed Tasks :
+          <span class="d-inline-flex fs-2 fw-bold">
+            {{ completedTaskCount }}
+          </span>
+        </div>
+      </div>
+    </li>
+    @for (task of taskList; track task; let i = $index) {
+    <li class="todo-item d-flex align-items-center justify-content-between gap-2 p-3 rounded">
+      <div class="d-flex align-items-center gap-2 w-75">
+        <input type="checkbox" class="todo-checkbox cursor-pointer" id="task-{{ i }}" [checked]="task.isCompleted"
+          (change)="onTaskComplete(i)" />
+        @if (task.isReadOnly) {
+        <label for="task-{{ i }}" class="todo-task cursor-pointer m-0" [class.line-throuth]="task.isCompleted">
+          {{ task.taskName }}
+        </label>
+        } @else {
+        <input type="text" class="form-control todo-input input-focus main-border-color py-1"
+          [(ngModel)]="task.taskName" />
+        }
+      </div>
+      <div class="todo-actions d-flex align-items-center gap-3">
+        <i class="ph-fill fs-4 {{ task.isReadOnly ? 'ph-pencil-simple' : 'ph-arrows-counter-clockwise' }} text-success cursor-pointer"
+          (click)="onEditUpdateTask(i)"></i>
+        <span>/</span>
+        <i class="ph-fill ph-trash fs-4 text-danger cursor-pointer" (click)="onDeleteTask(i)"></i>
+      </div>
+    </li>
+    } @empty {
+    <img
+      src="https://cdni.iconscout.com/illustration/premium/thumb/man-having-task-error-illustration-svg-download-png-10922148.png"
+      alt="no-tasks" class="no-tasks-image">
+    }
+  </ul>
+</div>

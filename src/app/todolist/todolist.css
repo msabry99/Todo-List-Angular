@@ -1,0 +1,117 @@
+.logo-image {
+  width: 200px;
+  animation: showTask 0.9s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  -webkit-animation: showTask 0.9s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+.input-task-card {
+  background-color: #382c4b;
+  color: #fff;
+  animation: showTask 0.9s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  -webkit-animation: showTask 0.9s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+.shadow-card {
+  box-shadow: 0 1rem 3rem rgb(9 1 20);
+}
+.no-tasks-image {
+  width: 100%;
+  max-width: 300px;
+  display: block;
+  margin: auto;
+  filter: drop-shadow(30px 30px 30px black);
+  animation: showTask 0.9s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  -webkit-animation: showTask 0.9s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  -webkit-filter: drop-shadow(30px 30px 30px black);
+}
+.todo-list {
+  animation: showTask 0.9s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  -webkit-animation: showTask 0.9s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+.todo-item {
+  background-color: #e8e0f6;
+  border-left: 10px solid #452970;
+  transition: var(--animated-transition);
+  -webkit-transition: var(--animated-transition);
+  -moz-transition: var(--animated-transition);
+  -ms-transition: var(--animated-transition);
+  -o-transition: var(--animated-transition);
+  animation: showTask 0.9s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  -webkit-animation: showTask 0.9s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.todo-checkbox {
+  --dim: 20px;
+  width: var(--dim);
+  height: var(--dim);
+  accent-color: purple;
+}
+.todo-task {
+  font-size: 1.1rem;
+}
+.ph-fill {
+  --dim: 30px;
+  width: var(--dim);
+  height: var(--dim);
+  min-width: var(--dim);
+  min-height: var(--dim);
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  transition: var(--animated-transition);
+  -webkit-transition: var(--animated-transition);
+  -moz-transition: var(--animated-transition);
+  -ms-transition: var(--animated-transition);
+  -o-transition: var(--animated-transition);
+}
+.ph-fill:hover {
+  rotate: 360deg;
+}
+.ph-fill.text-success:hover {
+  background-color: #d5f5d5;
+}
+.ph-fill.text-danger:hover {
+  background-color: #f2cfcf;
+}
+.line-throuth {
+  text-decoration: line-through;
+}
+.icon-boxed {
+  background-color: #452970;
+  padding: 0 5px;
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.5);
+}
+/* ============================== */
+/* VALIDATION FORM STYLE */
+.ng-touched.ng-valid .todo-input {
+  border-color: green !important;
+}
+
+/* ============================== */
+/* ANIMATION BAR */
+@keyframes showTask {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+    -webkit-transform: translateY(10px);
+    -moz-transform: translateY(10px);
+    -ms-transform: translateY(10px);
+    -o-transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    -webkit-transform: translateY(0);
+    -moz-transform: translateY(0);
+    -ms-transform: translateY(0);
+    -o-transform: translateY(0);
+  }
+}
