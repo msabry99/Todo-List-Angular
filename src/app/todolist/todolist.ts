@@ -1,6 +1,19 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewChecked,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
+
+export interface Task {
+  taskName: string;
+  isCompleted: boolean;
+  isReadonly: boolean;
+}
 
 @Component({
   selector: 'todolist',
@@ -8,48 +21,58 @@ import { FormsModule, NgForm } from '@angular/forms';
   templateUrl: './todolist.html',
   styleUrl: './todolist.css',
 })
-export class Todolist implements OnInit {
-  @ViewChild('editInput', { static: false })
+export class Todolist implements OnInit, AfterViewChecked {
+  @ViewChild('editInputEle', { static: false })
   editInput!: ElementRef<HTMLInputElement>;
   @ViewChild('mainInput', { static: false })
   mainInput!: ElementRef<HTMLInputElement>;
   completedTaskCount = 0;
   localStorageName = 'todo-list-v1';
+  isFocusInput = false;
 
-  taskList: { taskName: string; isCompleted: boolean; isReadOnly: boolean }[] =
-    [
-      {
-        taskName: 'Brush Teeth',
-        isCompleted: false,
-        isReadOnly: true,
-      },
-    ];
+  // Main Task Array
+  taskList: Task[] = [];
+
+  // Input Focus
+  onFocusInput() {
+    setTimeout(() => {
+      if (this.editInput.nativeElement) {
+        this.editInput.nativeElement.focus();
+      }
+    });
+  }
+
+  // detect the dom changes
+  constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
+    // Get Data From Localstorage
     this.getDataFromLocalStorage();
+    // Get Task Completed Count
     this.onCountTaskCompleted();
   }
 
+  // On Submit Form to get The Value of Task Name
   onAddTask(taskForm: NgForm) {
     const newValue = taskForm.controls['newTask'].value;
     this.taskList.push({
       taskName: newValue,
       isCompleted: false,
-      isReadOnly: true,
+      isReadonly: true,
     });
     taskForm.reset();
-    setTimeout(() => {
-      this.mainInput.nativeElement.focus();
-    }, 1);
+    this.mainInput.nativeElement.focus();
     console.log(this.taskList);
     this.saveDataToLocalStorage();
   }
 
+  // Save Data To Localstorage
   saveDataToLocalStorage() {
     const myTodoListData = JSON.stringify(this.taskList);
     localStorage.setItem(this.localStorageName, myTodoListData);
   }
 
+  // Get Data From Localstorage
   getDataFromLocalStorage() {
     const dataFromLocalStorage = localStorage.getItem(this.localStorageName);
     if (dataFromLocalStorage != null) {
@@ -57,30 +80,30 @@ export class Todolist implements OnInit {
     }
   }
 
+  // Edit And Update Task
   onEditUpdateTask(index: number) {
-    this.taskList[index].isReadOnly = !this.taskList[index].isReadOnly;
-    if (!this.taskList[index].isReadOnly) {
-      setTimeout(() => {
-        this.editInput.nativeElement.focus();
-      }, 1000);
-    }
+    this.taskList[index].isReadonly = !this.taskList[index].isReadonly;
     console.log(this.taskList);
+    this.cdr.detectChanges();
+    this.isFocusInput = true;
     this.saveDataToLocalStorage();
   }
 
+  // Get Count of Completed Task
   onCountTaskCompleted() {
     this.completedTaskCount = this.taskList.filter(
       (task) => task.isCompleted
     ).length;
   }
 
+  // To Toggle between inComplete and Complete Tasks
   onTaskComplete(index: number) {
     this.taskList[index].isCompleted = !this.taskList[index].isCompleted;
-    console.log(this.taskList);
     this.onCountTaskCompleted();
     this.saveDataToLocalStorage();
   }
 
+  // Delete Task
   onDeleteTask(index: number) {
     const deleteconfirm = confirm('Are you sure to delete this task?');
     if (deleteconfirm) {
@@ -88,5 +111,12 @@ export class Todolist implements OnInit {
     }
     console.log(this.taskList);
     this.saveDataToLocalStorage();
+  }
+
+  ngAfterViewChecked(): void {
+    if (this.isFocusInput && this.editInput) {
+      this.onFocusInput();
+      this.isFocusInput = false;
+    }
   }
 }

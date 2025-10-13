@@ -43,19 +43,19 @@
     @for (task of taskList; track task; let i = $index) {
     <li class="todo-item d-flex align-items-center justify-content-between gap-2 p-3 rounded">
       <div class="d-flex align-items-center gap-2 w-75">
+        @if (task.isReadonly) {
         <input type="checkbox" class="todo-checkbox cursor-pointer" id="task-{{ i }}" [checked]="task.isCompleted"
           (change)="onTaskComplete(i)" />
-        @if (task.isReadOnly) {
         <label for="task-{{ i }}" class="todo-task cursor-pointer m-0" [class.line-throuth]="task.isCompleted">
           {{ task.taskName }}
         </label>
         } @else {
         <input type="text" class="form-control todo-input input-focus main-border-color py-1"
-          [(ngModel)]="task.taskName" />
+          [(ngModel)]="task.taskName" #editInputEle />
         }
       </div>
       <div class="todo-actions d-flex align-items-center gap-3">
-        <i class="ph-fill fs-4 {{ task.isReadOnly ? 'ph-pencil-simple' : 'ph-arrows-counter-clockwise' }} text-success cursor-pointer"
+        <i class="ph-fill fs-4 {{ task.isReadonly ? 'ph-pencil-simple' : 'ph-arrows-counter-clockwise' }} text-success cursor-pointer"
           (click)="onEditUpdateTask(i)"></i>
         <span>/</span>
         <i class="ph-fill ph-trash fs-4 text-danger cursor-pointer" (click)="onDeleteTask(i)"></i>
