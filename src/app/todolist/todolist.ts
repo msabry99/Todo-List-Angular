@@ -33,7 +33,7 @@ export class Todolist implements OnInit, AfterViewChecked {
   // Main Task Array
   taskList: Task[] = [];
 
-  // Input Focus
+  // Input to Focus
   onFocusInput() {
     setTimeout(() => {
       if (this.editInput.nativeElement) {

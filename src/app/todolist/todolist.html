@@ -54,12 +54,14 @@
           [(ngModel)]="task.taskName" #editInputEle />
         }
       </div>
+      @if (!task.isCompleted) {
       <div class="todo-actions d-flex align-items-center gap-3">
         <i class="ph-fill fs-4 {{ task.isReadonly ? 'ph-pencil-simple' : 'ph-arrows-counter-clockwise' }} text-success cursor-pointer"
           (click)="onEditUpdateTask(i)"></i>
         <span>/</span>
         <i class="ph-fill ph-trash fs-4 text-danger cursor-pointer" (click)="onDeleteTask(i)"></i>
       </div>
+      }
     </li>
     } @empty {
     <img
