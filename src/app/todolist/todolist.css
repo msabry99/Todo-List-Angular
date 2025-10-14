@@ -29,6 +29,7 @@
 .todo-item {
   background-color: #e8e0f6;
   border-left: 10px solid #452970;
+  min-height: 58px;
   transition: var(--animated-transition);
   -webkit-transition: var(--animated-transition);
   -moz-transition: var(--animated-transition);
@@ -78,8 +79,9 @@
 .ph-fill.text-danger:hover {
   background-color: #f2cfcf;
 }
-.line-throuth {
+.muted-line-throuth {
   text-decoration: line-through;
+  color: gray;
 }
 .icon-boxed {
   background-color: #452970;

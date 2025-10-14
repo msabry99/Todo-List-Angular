@@ -75,6 +75,9 @@ body {
 .main-border-color {
   border-color: #452970;
 }
+.accent-green-color {
+  accent-color: #4fa54f !important;
+}
 @media (min-width: 768px) {
   .w-md-auto {
     width: auto !important;

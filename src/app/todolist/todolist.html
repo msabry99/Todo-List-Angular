@@ -45,8 +45,8 @@
       <div class="d-flex align-items-center gap-2 w-75">
         @if (task.isReadonly) {
         <input type="checkbox" class="todo-checkbox cursor-pointer" id="task-{{ i }}" [checked]="task.isCompleted"
-          (change)="onTaskComplete(i)" />
-        <label for="task-{{ i }}" class="todo-task cursor-pointer m-0" [class.line-throuth]="task.isCompleted">
+          (change)="onTaskComplete(i)" [class.accent-green-color]="task.isCompleted" />
+        <label for="task-{{ i }}" class="todo-task cursor-pointer m-0" [class.muted-line-throuth]="task.isCompleted">
           {{ task.taskName }}
         </label>
         } @else {
