@@ -28,7 +28,7 @@
 }
 .todo-item {
   background-color: #e8e0f6;
-  border-left: 10px solid #452970;
+  /* border-left: 10px solid #452970; */
   min-height: 58px;
   transition: var(--animated-transition);
   -webkit-transition: var(--animated-transition);
@@ -37,6 +37,12 @@
   -o-transition: var(--animated-transition);
   animation: showTask 0.9s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   -webkit-animation: showTask 0.9s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.task-number {
+  width: 50px;
+  color: #fff;
+  background-color: #452970;
 }
 
 .todo-checkbox {

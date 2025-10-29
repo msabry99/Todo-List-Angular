@@ -22,26 +22,38 @@
     </div>
   </form>
   <ul class="todo-list list-unstyled d-flex flex-column gap-3 p-0 m-0 w-100 mx-w-800 mx-auto pb-3">
-    <li class="d-flex align-items-center justify-content-between flex-wrap gap-2 text-white">
-      <div class="d-flex align-items-center gap-2" *ngIf="taskList.length">
-        <i class="ph ph-list-numbers fs-1 icon-boxed"></i>
-        <div class="d-flex align-items-center gap-1 fs-4">Tasks Count :
-          <span class="d-inline-flex fs-2 fw-bold">
-            {{ taskList.length }}
-          </span>
+    <li class="d-flex align-items-start justify-content-between flex-wrap gap-2 text-white">
+      <div class="d-flex flex-column gap-2">
+        <div class="d-flex align-items-center gap-2" *ngIf="taskList.length">
+          <i class="ph ph-list-numbers fs-1 icon-boxed"></i>
+          <div class="d-flex align-items-center gap-1 fs-4">Tasks Count :
+            <span class="d-inline-flex fs-2 fw-bold">
+              {{ taskList.length }}
+            </span>
+          </div>
+        </div>
+        <div class="d-flex align-items-center gap-2" *ngIf="completedTaskCount">
+          <i class="ph-bold ph-list-checks fs-1 icon-boxed"></i>
+          <div class="d-flex align-items-center gap-1 fs-4">Completed Tasks :
+            <span class="d-inline-flex fs-2 fw-bold">
+              {{ completedTaskCount }}
+            </span>
+          </div>
         </div>
       </div>
-      <div class="d-flex align-items-center gap-2" *ngIf="completedTaskCount">
-        <i class="ph-bold ph-list-checks fs-1 icon-boxed"></i>
-        <div class="d-flex align-items-center gap-1 fs-4">Completed Tasks :
-          <span class="d-inline-flex fs-2 fw-bold">
-            {{ completedTaskCount }}
-          </span>
+      <div ngbDropdown>
+        <button type="button" class="btn btn-purple" ngbDropdownToggle>
+          {{ currentTask }}
+        </button>
+        <div ngbDropdownMenu class="dropdown-menu-purple" aria-labelledby="dropdownBasic1">
+          <button class="dropdown-item" ngbDropdownItem (click)="currentTask = 'All'">All</button>
+          <button class="dropdown-item" ngbDropdownItem (click)="currentTask = 'Active'">Active</button>
+          <button class="dropdown-item" ngbDropdownItem (click)="currentTask = 'Completed'">Completed</button>
         </div>
       </div>
     </li>
-    @for (task of taskList; track task; let i = $index) {
-    <li class="todo-item d-flex align-items-center justify-content-between gap-2 p-3 rounded">
+    @for (task of filteredTasks; track task; let i = $index) {
+    <li class="todo-item d-flex align-items-center justify-content-between gap-2 p-3 radius-10">
       <div class="d-flex align-items-center gap-2 w-75">
         @if (task.isReadonly) {
         <input type="checkbox" class="todo-checkbox cursor-pointer" id="task-{{ i }}" [checked]="task.isCompleted"
@@ -50,18 +62,18 @@
           {{ task.taskName }}
         </label>
         } @else {
-        <input type="text" class="form-control todo-input input-focus main-border-color py-1"
-          [(ngModel)]="task.taskName" #editInputEle />
+        <textarea class="form-control todo-input input-focus main-border-color py-1" [(ngModel)]="task.taskName"
+          #editInputEle></textarea>
         }
       </div>
-      @if (!task.isCompleted) {
       <div class="todo-actions d-flex align-items-center gap-3">
+        @if (!task.isCompleted) {
         <i class="ph-fill fs-4 {{ task.isReadonly ? 'ph-pencil-simple' : 'ph-arrows-counter-clockwise' }} text-success cursor-pointer"
           (click)="onEditUpdateTask(i)"></i>
         <span>/</span>
+        }
         <i class="ph-fill ph-trash fs-4 text-danger cursor-pointer" (click)="onDeleteTask(i)"></i>
       </div>
-      }
     </li>
     } @empty {
     <img

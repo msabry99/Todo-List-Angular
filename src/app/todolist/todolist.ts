@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 export interface Task {
   taskName: string;
@@ -17,7 +18,7 @@ export interface Task {
 
 @Component({
   selector: 'todolist',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, NgbModule],
   templateUrl: './todolist.html',
   styleUrl: './todolist.css',
 })
@@ -29,6 +30,7 @@ export class Todolist implements OnInit, AfterViewChecked {
   completedTaskCount = 0;
   localStorageName = 'todo-list-v1';
   isFocusInput = false;
+  currentTask: 'All' | 'Active' | 'Completed' = 'All';
 
   // Main Task Array
   taskList: Task[] = [];
@@ -111,6 +113,17 @@ export class Todolist implements OnInit, AfterViewChecked {
     }
     console.log(this.taskList);
     this.saveDataToLocalStorage();
+  }
+
+  // Filter Tasks [All, Active and Completed]
+  get filteredTasks() {
+    if (this.currentTask === 'Active') {
+      return this.taskList.filter((task) => !task.isCompleted);
+    } else if (this.currentTask === 'Completed') {
+      return this.taskList.filter((task) => task.isCompleted);
+    } else {
+      return this.taskList;
+    }
   }
 
   ngAfterViewChecked(): void {
