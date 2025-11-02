@@ -1,8 +1,10 @@
+<!-- ====================== TODO LIST LOGO ======================== -->
 <div class="d-flex align-items-start justify-content-center hv-100 py-4 mx-auto w-100 mx-w-800 mb-3">
   <img src="assets/logo.png" class="logo-image" alt="Logo" loading="lazy" />
 </div>
-
+<!-- ==================================================== -->
 <div class="container">
+  <!-- ====================== TODO LIST FORM ======================== -->
   <form #taskForm="ngForm" (ngSubmit)="onAddTask(taskForm)">
     <div class="p-3 mb-5 input-task-card rounded shadow-card mx-auto w-100 mx-w-800">
       <label for="task" class="form-label d-flex align-items-start gap-2 fw-semibold fs-2 mb-3 lh-1">
@@ -21,10 +23,13 @@
       </div>
     </div>
   </form>
+  <!-- ==================================================== -->
+  <!-- ====================== TODO LIST ITEMS ======================== -->
   <ul class="todo-list list-unstyled d-flex flex-column gap-3 p-0 m-0 w-100 mx-w-800 mx-auto pb-3">
     <li class="d-flex align-items-start justify-content-between flex-wrap gap-2 text-white">
       <div class="d-flex flex-column gap-2">
-        <div class="d-flex align-items-center gap-2" *ngIf="taskList.length">
+        @if (taskList.length) {
+        <div class="d-flex align-items-center gap-2">
           <i class="ph ph-list-numbers fs-1 icon-boxed"></i>
           <div class="d-flex align-items-center gap-1 fs-4">Tasks Count :
             <span class="d-inline-flex fs-2 fw-bold">
@@ -32,7 +37,9 @@
             </span>
           </div>
         </div>
-        <div class="d-flex align-items-center gap-2" *ngIf="completedTaskCount">
+        }
+        @if (completedTaskCount) {
+        <div class="d-flex align-items-center gap-2">
           <i class="ph-bold ph-list-checks fs-1 icon-boxed"></i>
           <div class="d-flex align-items-center gap-1 fs-4">Completed Tasks :
             <span class="d-inline-flex fs-2 fw-bold">
@@ -40,25 +47,31 @@
             </span>
           </div>
         </div>
+        }
       </div>
+      @if (taskList.length) {
       <div ngbDropdown>
         <button type="button" class="btn btn-purple" ngbDropdownToggle>
           {{ currentTask }}
         </button>
         <div ngbDropdownMenu class="dropdown-menu-purple" aria-labelledby="dropdownBasic1">
-          <button class="dropdown-item" ngbDropdownItem (click)="currentTask = 'All'">All</button>
-          <button class="dropdown-item" ngbDropdownItem (click)="currentTask = 'Active'">Active</button>
-          <button class="dropdown-item" ngbDropdownItem (click)="currentTask = 'Completed'">Completed</button>
+          @for (filterBtn of taskListFilterBtn; track $index) {
+          <button class="dropdown-item" ngbDropdownItem (click)="currentTask = filterBtn; saveDataToLocalStorage()">
+            {{ filterBtn }}
+          </button>
+          }
         </div>
       </div>
+      }
     </li>
     @for (task of filteredTasks; track task; let i = $index) {
     <li class="todo-item d-flex align-items-center justify-content-between gap-2 p-3 radius-10">
       <div class="d-flex align-items-center gap-2 w-75">
         @if (task.isReadonly) {
-        <input type="checkbox" class="todo-checkbox cursor-pointer" id="task-{{ i }}" [checked]="task.isCompleted"
-          (change)="onTaskComplete(i)" [class.accent-green-color]="task.isCompleted" />
-        <label for="task-{{ i }}" class="todo-task cursor-pointer m-0" [class.muted-line-throuth]="task.isCompleted">
+        <input type="checkbox" class="todo-checkbox cursor-pointer" id="task-{{ i + 1 }}" [checked]="task.isCompleted"
+          (change)="onTaskComplete(task)" [class.accent-green-color]="task.isCompleted" />
+        <label for="task-{{ i + 1 }}" class="todo-task cursor-pointer m-0"
+          [class.muted-line-throuth]="task.isCompleted">
           {{ task.taskName }}
         </label>
         } @else {
@@ -69,7 +82,7 @@
       <div class="todo-actions d-flex align-items-center gap-3">
         @if (!task.isCompleted) {
         <i class="ph-fill fs-4 {{ task.isReadonly ? 'ph-pencil-simple' : 'ph-arrows-counter-clockwise' }} text-success cursor-pointer"
-          (click)="onEditUpdateTask(i)"></i>
+          (click)="onEditUpdateTask(task)"></i>
         <span>/</span>
         }
         <i class="ph-fill ph-trash fs-4 text-danger cursor-pointer" (click)="onDeleteTask(i)"></i>

@@ -28,12 +28,16 @@ export class Todolist implements OnInit, AfterViewChecked {
   @ViewChild('mainInput', { static: false })
   mainInput!: ElementRef<HTMLInputElement>;
   completedTaskCount = 0;
-  localStorageName = 'todo-list-v1';
+  localStorageTodoList = 'todo-list-data';
+  localStorageTodoListFilter = 'todo-list-filter';
   isFocusInput = false;
-  currentTask: 'All' | 'Active' | 'Completed' = 'All';
+  currentTask: 'All' | 'Active' | 'Completed' | string = 'All';
 
   // Main Task Array
   taskList: Task[] = [];
+
+  // Filter Buttons List
+  taskListFilterBtn = ['All', 'Active', 'Completed'];
 
   // Input to Focus
   onFocusInput() {
@@ -70,21 +74,37 @@ export class Todolist implements OnInit, AfterViewChecked {
 
   // Save Data To Localstorage
   saveDataToLocalStorage() {
+    // Save main todo list in localstorage
     const myTodoListData = JSON.stringify(this.taskList);
-    localStorage.setItem(this.localStorageName, myTodoListData);
+    localStorage.setItem(this.localStorageTodoList, myTodoListData);
+
+    // Save main Filter in localstorage
+    const filteredTodoListData = JSON.stringify(this.currentTask);
+    localStorage.setItem(this.localStorageTodoListFilter, filteredTodoListData);
   }
 
   // Get Data From Localstorage
   getDataFromLocalStorage() {
-    const dataFromLocalStorage = localStorage.getItem(this.localStorageName);
+    // Get main Todo List from Localstorage
+    const dataFromLocalStorage = localStorage.getItem(
+      this.localStorageTodoList
+    );
     if (dataFromLocalStorage != null) {
       this.taskList = JSON.parse(dataFromLocalStorage);
+    }
+
+    // Get main Todo List Filter from Localstorage
+    const filteredDataFromLocalStroage = localStorage.getItem(
+      this.localStorageTodoListFilter
+    );
+    if (filteredDataFromLocalStroage != null) {
+      this.currentTask = JSON.parse(filteredDataFromLocalStroage);
     }
   }
 
   // Edit And Update Task
-  onEditUpdateTask(index: number) {
-    this.taskList[index].isReadonly = !this.taskList[index].isReadonly;
+  onEditUpdateTask(task: Task) {
+    task.isReadonly = !task.isReadonly;
     console.log(this.taskList);
     this.cdr.detectChanges();
     this.isFocusInput = true;
@@ -99,8 +119,8 @@ export class Todolist implements OnInit, AfterViewChecked {
   }
 
   // To Toggle between inComplete and Complete Tasks
-  onTaskComplete(index: number) {
-    this.taskList[index].isCompleted = !this.taskList[index].isCompleted;
+  onTaskComplete(task: Task) {
+    task.isCompleted = !task.isCompleted;
     this.onCountTaskCompleted();
     this.saveDataToLocalStorage();
   }
@@ -126,6 +146,7 @@ export class Todolist implements OnInit, AfterViewChecked {
     }
   }
 
+  // Check Content After Checked to make focus on input after appear on Dom
   ngAfterViewChecked(): void {
     if (this.isFocusInput && this.editInput) {
       this.onFocusInput();
