@@ -11,6 +11,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 export interface Task {
+  id: number;
   taskName: string;
   isCompleted: boolean;
   isReadonly: boolean;
@@ -39,7 +40,7 @@ export class Todolist implements OnInit, AfterViewChecked {
   // Filter Buttons List
   taskListFilterBtn = ['All', 'Active', 'Completed'];
 
-  // Input to Focus
+  // Input to Focus After Input Appear on DOM
   onFocusInput() {
     setTimeout(() => {
       if (this.editInput.nativeElement) {
@@ -62,6 +63,7 @@ export class Todolist implements OnInit, AfterViewChecked {
   onAddTask(taskForm: NgForm) {
     const newValue = taskForm.controls['newTask'].value;
     this.taskList.push({
+      id: Date.now(),
       taskName: newValue,
       isCompleted: false,
       isReadonly: true,
@@ -126,13 +128,23 @@ export class Todolist implements OnInit, AfterViewChecked {
   }
 
   // Delete Task
-  onDeleteTask(index: number) {
+  onDeleteTask(task: Task) {
     const deleteconfirm = confirm('Are you sure to delete this task?');
-    if (deleteconfirm) {
-      this.taskList.splice(index, 1);
+    if (!deleteconfirm) {
+      return;
+    }
+    const selectedIndex = this.taskList.findIndex(
+      (item) => item.id === task.id
+    );
+    if (selectedIndex > -1) {
+      this.taskList.splice(selectedIndex, 1);
     }
     console.log(this.taskList);
+    this.onCountTaskCompleted();
     this.saveDataToLocalStorage();
+    if (this.taskList.length <= 1) {
+      this.currentTask = 'All';
+    }
   }
 
   // Filter Tasks [All, Active and Completed]

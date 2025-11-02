@@ -38,7 +38,7 @@
           </div>
         </div>
         }
-        @if (completedTaskCount) {
+        @if (taskList.length && completedTaskCount) {
         <div class="d-flex align-items-center gap-2">
           <i class="ph-bold ph-list-checks fs-1 icon-boxed"></i>
           <div class="d-flex align-items-center gap-1 fs-4">Completed Tasks :
@@ -65,7 +65,7 @@
       }
     </li>
     @for (task of filteredTasks; track task; let i = $index) {
-    <li class="todo-item d-flex align-items-center justify-content-between gap-2 p-3 radius-10">
+    <li class="todo-item d-flex align-items-center justify-content-between flex-wrap gap-2 p-3 radius-10">
       <div class="d-flex align-items-center gap-2 w-75">
         @if (task.isReadonly) {
         <input type="checkbox" class="todo-checkbox cursor-pointer" id="task-{{ i + 1 }}" [checked]="task.isCompleted"
@@ -85,7 +85,7 @@
           (click)="onEditUpdateTask(task)"></i>
         <span>/</span>
         }
-        <i class="ph-fill ph-trash fs-4 text-danger cursor-pointer" (click)="onDeleteTask(i)"></i>
+        <i class="ph-fill ph-trash fs-4 text-danger cursor-pointer" (click)="onDeleteTask(task)"></i>
       </div>
     </li>
     } @empty {
