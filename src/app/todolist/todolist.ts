@@ -158,6 +158,16 @@ export class Todolist implements OnInit, AfterViewChecked {
     }
   }
 
+  // Delete All
+  onDeleteAll() {
+    const confirmMessage = confirm('Are you sure to delete all tasks?');
+    if (!confirmMessage) {
+      return;
+    }
+    this.taskList = [];
+    this.saveDataToLocalStorage();
+  }
+
   // Check Content After Checked to make focus on input after appear on Dom
   ngAfterViewChecked(): void {
     if (this.isFocusInput && this.editInput) {

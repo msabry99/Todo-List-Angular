@@ -50,20 +50,30 @@
         }
       </div>
       @if (taskList.length) {
-      <div ngbDropdown>
-        <button type="button" class="btn btn-purple" ngbDropdownToggle>
-          {{ currentTask }}
-        </button>
-        <div ngbDropdownMenu class="dropdown-menu-purple" aria-labelledby="dropdownBasic1">
-          @for (filterBtn of taskListFilterBtn; track $index) {
-          <button class="dropdown-item" ngbDropdownItem (click)="currentTask = filterBtn; saveDataToLocalStorage()">
-            {{ filterBtn }}
+      <div class="d-flex align-items-center gap-3">
+        <div ngbDropdown>
+          <button type="button" class="btn btn-purple d-flex align-items-center gap-2" ngbDropdownToggle>
+            <i class="ph ph-faders"></i>
+            <span>{{ currentTask }}</span>
           </button>
-          }
+          <div ngbDropdownMenu class="dropdown-menu-purple" aria-labelledby="dropdownBasic1">
+            @for (filterBtn of taskListFilterBtn; track $index) {
+            <button class="dropdown-item" ngbDropdownItem (click)="currentTask = filterBtn; saveDataToLocalStorage()">
+              {{ filterBtn }}
+            </button>
+            }
+          </div>
         </div>
+        <button class="btn btn-danger d-flex align-items-center gap-1" (click)="onDeleteAll()">
+          <i class="ph ph-trash"></i>
+          <span>Delete All</span>
+        </button>
       </div>
       }
     </li>
+    @if (taskList.length) {
+    <li class="border-top my-3" style="border-color: #ceadff !important;"></li>
+    }
     @for (task of filteredTasks; track task; let i = $index) {
     <li class="todo-item d-flex align-items-center justify-content-between flex-wrap gap-2 p-3 radius-10">
       <div class="d-flex align-items-center gap-2 w-75">
