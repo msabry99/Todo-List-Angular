@@ -165,6 +165,7 @@ export class Todolist implements OnInit, AfterViewChecked {
       return;
     }
     this.taskList = [];
+    this.onCountTaskCompleted();
     this.saveDataToLocalStorage();
   }
 
