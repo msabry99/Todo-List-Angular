@@ -38,6 +38,16 @@
           </div>
         </div>
         }
+        @if (taskList.length && activeTaskCount) {
+        <div class="d-flex align-items-center gap-2">
+          <i class="ph ph-spinner-gap fs-1 icon-boxed"></i>
+          <div class="d-flex align-items-center gap-1 fs-4">Active Tasks :
+            <span class="d-inline-flex fs-2 fw-bold">
+              {{ activeTaskCount }}
+            </span>
+          </div>
+        </div>
+        }
         @if (taskList.length && completedTaskCount) {
         <div class="d-flex align-items-center gap-2">
           <i class="ph-bold ph-list-checks fs-1 icon-boxed"></i>

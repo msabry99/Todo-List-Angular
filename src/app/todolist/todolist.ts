@@ -28,6 +28,7 @@ export class Todolist implements OnInit, AfterViewChecked {
   editInput!: ElementRef<HTMLInputElement>;
   @ViewChild('mainInput', { static: false })
   mainInput!: ElementRef<HTMLInputElement>;
+  activeTaskCount = 0;
   completedTaskCount = 0;
   localStorageTodoList = 'todo-list-data';
   localStorageTodoListFilter = 'todo-list-filter';
@@ -57,6 +58,8 @@ export class Todolist implements OnInit, AfterViewChecked {
     this.getDataFromLocalStorage();
     // Get Task Completed Count
     this.onCountTaskCompleted();
+    // Get Task Active Count
+    this.onCountTaskActive();
   }
 
   // On Submit Form to get The Value of Task Name
@@ -70,8 +73,10 @@ export class Todolist implements OnInit, AfterViewChecked {
     });
     taskForm.reset();
     this.mainInput.nativeElement.focus();
-    console.log(this.taskList);
     this.saveDataToLocalStorage();
+    this.onCountTaskActive();
+    this.currentTask = 'All';
+    console.log(this.taskList);
   }
 
   // Save Data To Localstorage
@@ -113,7 +118,14 @@ export class Todolist implements OnInit, AfterViewChecked {
     this.saveDataToLocalStorage();
   }
 
-  // Get Count of Completed Task
+  // Get Count of Active Tasks
+  onCountTaskActive() {
+    this.activeTaskCount = this.taskList.filter(
+      (task) => !task.isCompleted
+    ).length;
+  }
+
+  // Get Count of Completed Tasks
   onCountTaskCompleted() {
     this.completedTaskCount = this.taskList.filter(
       (task) => task.isCompleted
@@ -123,6 +135,7 @@ export class Todolist implements OnInit, AfterViewChecked {
   // To Toggle between inComplete and Complete Tasks
   onTaskComplete(task: Task) {
     task.isCompleted = !task.isCompleted;
+    this.onCountTaskActive();
     this.onCountTaskCompleted();
     this.saveDataToLocalStorage();
   }
@@ -140,9 +153,10 @@ export class Todolist implements OnInit, AfterViewChecked {
       this.taskList.splice(selectedIndex, 1);
     }
     console.log(this.taskList);
+    this.onCountTaskActive();
     this.onCountTaskCompleted();
     this.saveDataToLocalStorage();
-    if (this.taskList.length <= 1) {
+    if (this.taskList.length <= 1 || this.completedTaskCount === 0) {
       this.currentTask = 'All';
     }
   }
@@ -165,6 +179,7 @@ export class Todolist implements OnInit, AfterViewChecked {
       return;
     }
     this.taskList = [];
+    this.onCountTaskActive();
     this.onCountTaskCompleted();
     this.saveDataToLocalStorage();
   }
