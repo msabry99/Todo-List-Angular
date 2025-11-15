@@ -2,7 +2,7 @@
 <div class="d-flex align-items-start justify-content-center hv-100 py-4 mx-auto w-100 mx-w-800 mb-3">
   <img src="assets/logo.png" class="logo-image" alt="Logo" loading="lazy" />
 </div>
-<!-- ==================================================== -->
+<!-- ============================= SEPERATE LINE ============================= -->
 <div class="container">
   <!-- ====================== TODO LIST FORM ======================== -->
   <form #taskForm="ngForm" (ngSubmit)="onAddTask(taskForm)">
@@ -23,12 +23,11 @@
       </div>
     </div>
   </form>
-  <!-- ==================================================== -->
-  <!-- ====================== TODO LIST ITEMS ======================== -->
+  <!-- ============================= SEPERATE LINE ============================= -->
   <ul class="todo-list list-unstyled d-flex flex-column gap-3 p-0 m-0 w-100 mx-w-800 mx-auto pb-3">
+    <!-- ====================== TODO LIST ITEMS ======================== -->
     <li class="d-flex align-items-start justify-content-between flex-wrap gap-2 text-white">
       <div class="d-flex flex-column gap-2">
-        @if (taskList.length) {
         <div class="d-flex align-items-center gap-2">
           <i class="ph ph-list-numbers fs-1 icon-boxed"></i>
           <div class="d-flex align-items-center gap-1 fs-4">Tasks Count :
@@ -37,7 +36,6 @@
             </span>
           </div>
         </div>
-        }
         @if (taskList.length && activeTaskCount) {
         <div class="d-flex align-items-center gap-2">
           <i class="ph ph-spinner-gap fs-1 icon-boxed"></i>

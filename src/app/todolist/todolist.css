@@ -1,7 +1,21 @@
 .logo-image {
-  width: 200px;
-  animation: showTask 0.9s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  -webkit-animation: showTask 0.9s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --dim: 180px;
+  width: var(--dim);
+  filter: drop-shadow(0px 3px 5px #0f7174);
+  animation: showTask 0.9s cubic-bezier(0.68, -0.55, 0.265, 1.55),
+    imageLighting 1.5s ease-in-out infinite alternate-reverse;
+  -webkit-animation: showTask 0.9s cubic-bezier(0.68, -0.55, 0.265, 1.55),
+    imageLighting 1.5s ease-in-out infinite alternate-reverse;
+}
+@keyframes imageLighting {
+  0% {
+    filter: drop-shadow(0px 0px 0px transparent);
+    -webkit-filter: drop-shadow(0px 0px 0px transparent);
+  }
+  100% {
+    filter: drop-shadow(0px 5px 10px #0f7174);
+    -webkit-filter: drop-shadow(0px 5px 10px #0f7174);
+  }
 }
 .input-task-card {
   background-color: #382c4b;

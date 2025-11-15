@@ -116,6 +116,9 @@ export class Todolist implements OnInit, AfterViewChecked {
     this.cdr.detectChanges();
     this.isFocusInput = true;
     this.saveDataToLocalStorage();
+    if (task.isReadonly) {
+      this.confirmMessage('Edited Successfully');
+    }
   }
 
   // Get Count of Active Tasks
@@ -159,6 +162,7 @@ export class Todolist implements OnInit, AfterViewChecked {
     if (this.taskList.length <= 1 || this.completedTaskCount === 0) {
       this.currentTask = 'All';
     }
+    this.confirmMessage('Deleted Successfully');
   }
 
   // Filter Tasks [All, Active and Completed]
@@ -182,6 +186,7 @@ export class Todolist implements OnInit, AfterViewChecked {
     this.onCountTaskActive();
     this.onCountTaskCompleted();
     this.saveDataToLocalStorage();
+    this.confirmMessage('Deleted All Successfully');
   }
 
   // Check Content After Checked to make focus on input after appear on Dom
@@ -190,5 +195,12 @@ export class Todolist implements OnInit, AfterViewChecked {
       this.onFocusInput();
       this.isFocusInput = false;
     }
+  }
+
+  // Confirmation Message
+  confirmMessage(message: string, duration = 200) {
+    return setTimeout(() => {
+      alert(message);
+    }, duration);
   }
 }
